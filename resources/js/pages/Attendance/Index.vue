@@ -13,8 +13,8 @@
 
             <DataTable
                 :columns="columns"
-                :data="attendances.data"
-                :pagination="attendances.meta"
+                :data="attendances?.data ?? []"
+                :pagination="attendances?.meta"
                 @paginate="paginate"
             />
         </Card>

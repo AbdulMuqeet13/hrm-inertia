@@ -75,6 +75,6 @@ const form = reactive({
 });
 
 function submit() {
-    router.put(`employees/${employee.id}`, form);
+    router.put(`employees/${employee.id}`, form); 
 }
 </script>

@@ -15,9 +15,9 @@
         <!-- Employee Info -->
         <Card class="p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h2 class="text-2xl font-bold">{{ employee.first_name }} {{ employee.last_name }}</h2>
-                <p class="text-gray-500">Designation: {{ employee.designation?.name || '—' }}</p>
-                <p class="text-gray-500">Department: {{ employee.department?.name || '—' }}</p>
+                <h2 class="text-2xl font-bold">{{ employee?.first_name }} {{ employee?.last_name }}</h2>
+                <p class="text-gray-500">Designation: {{ employee?.designation?.name || '—' }}</p>
+                <p class="text-gray-500">Department: {{ employee?.department?.name || '—' }}</p>
             </div>
             <div class="flex gap-2">
                 <Button
@@ -54,8 +54,8 @@
             <h3 class="text-lg font-semibold mb-4">Attendance History</h3>
             <DataTable
                 :columns="columns"
-                :data="attendances.data"
-                :pagination="attendances.meta"
+                :data="attendances?.data ?? []"
+                :pagination="attendances?.meta"
                 @paginate="paginate"
             />
         </Card>
