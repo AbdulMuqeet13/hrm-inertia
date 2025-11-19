@@ -14,14 +14,9 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::resource('dashboard', DashboardController::class)->only(['index']);
-    // ------------------- ADMIN -------------------
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('employees', EmployeeController::class);
-        Route::resource('attendances', AttendanceController::class);
-    });
 
-    // ------------------- HR -------------------
-    Route::middleware('role:hr')->group(function () {
+    // ------------------- HR | Admin -------------------
+    Route::middleware('role:hr|admin')->group(function () {
         Route::resource('employees', EmployeeController::class)->only(['index', 'show', 'edit', 'update']);
         Route::resource('attendances', AttendanceController::class)->only(['index']);
     });
