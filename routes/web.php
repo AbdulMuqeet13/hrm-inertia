@@ -17,7 +17,7 @@ Route::middleware(['auth'])->group(function () {
 
     // ------------------- HR | Admin -------------------
     Route::middleware('role:hr|admin')->group(function () {
-        Route::resource('employees', EmployeeController::class)->only(['index', 'show', 'edit', 'update']);
+        Route::resource('employees', EmployeeController::class)->except('show');
         Route::resource('attendances', AttendanceController::class)->only(['index']);
     });
 

@@ -26,7 +26,7 @@
     </AppSidebarLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
@@ -92,7 +92,7 @@ const columns = [
         render: (row) => [
             h(
                 Link,
-                { href: `employees/${row.id}` },
+                { href: `employees/${row.id}/edit` },
                 {
                     default: () =>
                         h(Button, { variant: 'outline', size: 'sm' }, () =>

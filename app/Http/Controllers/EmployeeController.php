@@ -38,7 +38,7 @@ class EmployeeController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return Inertia::render('Employees/Create', 'roles');
+        return Inertia::render('Employees/Create', ['roles' => $roles]);
     }
 
     public function store(StoreEmployeeRequest $request)
@@ -48,6 +48,8 @@ class EmployeeController extends Controller
             'email' => strtolower($request->first_name . $request->last_name) . '@' . strtolower(config('app.name') . '.com'),
             'password' => 'password',
         ]);
+        $user->assignRole($request->role);
+        // dd($request->all());
         $data = $request->validated();
         $data['user_id'] = $user->id;
         Employee::createEmployee(data: $data);
@@ -55,9 +57,11 @@ class EmployeeController extends Controller
     }
 
     public function edit(Employee $employee)
-    {
+    {       
+        $roles = Role::all();
         return Inertia::render('Employees/Edit', [
             'employee' => $employee->load(['user.roles']),
+            'roles' => $roles,
         ]);
     }
 

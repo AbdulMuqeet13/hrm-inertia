@@ -54,27 +54,31 @@
     </AppSidebarLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 import { Label } from '@/components/ui/label/index.ts';
-import { Select, SelectItem } from '@/components/ui/select/index.ts';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
 
-const { employee, roles } = usePage().props;
+
+const props = defineProps({
+    employee: [],
+    roles: [],
+});
 const form = reactive({
-    first_name: employee.first_name,
-    last_name: employee.last_name,
-    salary: employee.salary,
-    department: employee.department,
-    designation: employee.designation,
-    role: employee.user.roles[0]?.name,
+    first_name: props.employee.first_name,
+    last_name: props.employee.last_name,
+    salary: props.employee.salary,
+    department: props.employee.department,
+    designation: props.employee.designation,
+    role: props.employee.user.roles[0]?.name,
 });
 
 function submit() {
-    router.put(`employees/${employee.id}`, form); 
+    router.put(`/employees/${props.employee.id}`, form); 
 }
 </script>

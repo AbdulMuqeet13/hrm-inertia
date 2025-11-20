@@ -19,6 +19,9 @@ class Employee extends Model
     public function attendances() {
         return $this->hasMany(Attendance::class);
     }
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 //    public function department() { return $this->belongsTo(Department::class); }
 //    public function designation() { return $this->belongsTo(Designation::class); }
     public function terminate(): bool

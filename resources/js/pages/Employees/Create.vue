@@ -48,19 +48,21 @@
     </AppSidebarLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive } from 'vue';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectLabel, SelectItem } from '@/components/ui/select';
+import { Router } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { router } from '@inertiajs/vue3';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 import { Label } from '@/components/ui/label/index.ts';
-import { Select, SelectItem } from '@/components/ui/select/index.ts';
 
-const props = defineProps({
-    roles: [];
-})
+
+defineProps({
+    roles: []
+});
 
 const form = reactive({
     first_name: '',
@@ -72,6 +74,7 @@ const form = reactive({
 });
 
 function submit() {
+
     router.post('/employees', form);
 }
 </script>

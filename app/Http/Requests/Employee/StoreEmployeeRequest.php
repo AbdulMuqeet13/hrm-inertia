@@ -2,15 +2,19 @@
 
 namespace App\Http\Requests\Employee;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+
 
 class StoreEmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
+    
     public function authorize(): bool
     {
+        
         return true;
     }
 
@@ -27,6 +31,10 @@ class StoreEmployeeRequest extends FormRequest
             'department' => ['required', 'string', 'max:255'],
             'designation' => ['required', 'string', 'max:255'],
             'salary' => ['required', 'numeric'],
+            'role' => ['required']
         ];
+
     }
-}
+
+    }
+
