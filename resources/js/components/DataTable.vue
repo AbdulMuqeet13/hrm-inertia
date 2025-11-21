@@ -32,16 +32,17 @@
         <div class="p-4 flex justify-end">
             <Pagination
                 v-if="pagination"
-                :links="pagination.links"
+                :links="employees.links"
                 @paginate="onPaginate"
                 :items-per-page="10"/>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup="ts">
 import { defineProps, defineEmits } from 'vue'
 import { Pagination } from '@/components/ui/pagination'
+import employees from '@/routes/employees'
 
 const props = defineProps({
     columns: { type: Array, required: true },

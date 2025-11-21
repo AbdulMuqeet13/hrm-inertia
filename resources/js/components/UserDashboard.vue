@@ -7,17 +7,19 @@
                 <p class="text-gray-500">Department: {{ employee?.department?.name || '—' }}</p>
             </div>
             <div class="flex gap-2">
+                {{ props.stats.attendence_data.check_in}}
                 <Button
                     variant="outline"
                     @click="checkIn"
-                    :disabled="attendance?.check_in"
+                    :disabled="props.stats?.attendence_data?.check_in"
+
                 >
                     Check In
                 </Button>
                 <Button
                     variant="destructive"
                     @click="checkOut"
-                    :disabled="!attendance?.check_in || attendance?.check_out"
+                    :disabled="props.stats?.attendence_data?.check_in || props.stats?.attendence_data?.check_out"
                 >
                     Check Out
                 </Button>
@@ -31,8 +33,11 @@
                 <Badge :variant="attendance?.status === 'present' ? 'success' : 'secondary'">
                     {{ attendance?.status || 'Not Marked' }}
                 </Badge>
-                <span v-if="attendance?.check_in">Check-in: {{ attendance.check_in }}</span>
-                <span v-if="attendance?.check_out">Check-out: {{ attendance.check_out }}</span>
+                {{ attendance }}
+                <span v-if="props.stats?.attendence_data
+                ?.check_in">Check-in: {{ props.stats?.attendence_data
+                ?.check_in }}</span>
+                <span v-if="props.stats?.attendence_data?.check_out">Check-out: {{ props.stats?.attendence_data?.check_out }}</span>
             </div>
         </Card>
 
@@ -58,9 +63,11 @@ import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 import DataTable from '@/components/DataTable.vue';
 import { Badge } from '@/components/ui/badge/index.ts';
 import { Button } from '@/components/ui/button/index.ts';
+import { router } from '@inertiajs/vue3';
 Chart.register(...registerables)
 
 const props = usePage().props
+console.log(props)
 const stats = props.stats
 const monthly = props.monthly
 
@@ -72,5 +79,17 @@ const chartOptions = { responsive: true, plugins: { legend: { position: 'bottom'
 
 function formatTitle(str) {
     return str.replace(/_/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase())
+}
+
+function checkIn() {
+    router.post('/attendances', {}, {
+        preserveScroll: true,
+        onSuccess: () => console.log("Checked In")
+    })
+}
+function checkOut() {
+  router.put(`/attendences/${props.auth.user.id}`, {}, {
+        onSuccess: () => console.log("Checked out!")
+    })
 }
 </script>

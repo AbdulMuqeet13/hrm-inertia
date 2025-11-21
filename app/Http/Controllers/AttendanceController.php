@@ -24,14 +24,20 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $employeeId = Employee::where('user_id', Auth::id())->value('id');
-        Attendance::checkIn($employeeId);
+           if(!$employeeId){
+            return redirect()->back()->with('success', 'this user has no id against employee id.');
+        }
+        $attendance=  Attendance::checkIn($employeeId);
+        $attendance->save();
         return redirect()->back()->with('success', 'Checked in successfully.');
+        
     }
 
     public function update(Request $request)
     {
         $employeeId = Employee::where('user_id', Auth::id())->value('id');
-        Attendance::checkOut($employeeId);
+        $attendance = Attendance::checkOut($employeeId);
+        $attendance->save();
         return redirect()->back()->with('success', 'Checked out successfully.');
     }
 

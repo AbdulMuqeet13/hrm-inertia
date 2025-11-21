@@ -39,10 +39,11 @@ import { Pencil, Trash } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge/index.ts';
 
 const props = defineProps({
-    employees: [],
+    employees: [Object, Array],
     filters: {
-        search: '',
-    },
+    type: Object,
+    default: () => ({ search: '' })
+},
 });
 const filters = reactive({ search: props.filters?.search || '' });
 
@@ -92,7 +93,7 @@ const columns = [
         render: (row) => [
             h(
                 Link,
-                { href: `employees/${row.id}/edit` },
+                { href: `/employees/${row.id}/edit` },
                 {
                     default: () =>
                         h(Button, { variant: 'outline', size: 'sm' }, () =>

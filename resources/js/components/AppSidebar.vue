@@ -35,7 +35,7 @@ const mainNavItems: NavItem[] = [
         title: 'Attendance',
         href: attendances(),
         icon: LayoutGrid,
-        roles: ['employee', 'hr'],
+        roles: ['employee', 'hr','admin'],
     },
 ];
 </script>

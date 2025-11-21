@@ -22,9 +22,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // ------------------- EMPLOYEE -------------------
-    Route::middleware('role:employee')->group(function () {
-        Route::resource('attendances', AttendanceController::class)->only(['index', 'store', 'update']);
+    Route::middleware('role:employee|hr')->group(function () {
+        Route::resource('attendances', AttendanceController::class)->only(['store', 'update']);
+
     });
+    // Route::middleware('role:hr')->group(function () {
+    //     Route::resource('attendances', AttendanceController::class)->only(['index', 'store', 'update']);
+    // });
 });
 
 require __DIR__.'/settings.php';

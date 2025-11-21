@@ -27,6 +27,7 @@
                 >
                     Check In
                 </Button>
+                {{ flash.success }}
                 <Button
                     variant="destructive"
                     @click="checkOut"
@@ -71,6 +72,7 @@ import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 import DataTable from '@/components/DataTable.vue';
 import { Badge } from '@/components/ui/badge/index.ts';
 import { Button } from '@/components/ui/button/index.ts';
+import { router } from '@inertiajs/vue3';
 Chart.register(...registerables)
 
 const props = usePage().props
@@ -85,5 +87,15 @@ const chartOptions = { responsive: true, plugins: { legend: { position: 'bottom'
 
 function formatTitle(str) {
     return str.replace(/_/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase())
+}
+function checkIn() {
+    router.post('/attendances', {}, {
+        onSuccess: () => console.log("Checked in!")
+    })
+}
+function checkOut() {
+    router.put('/attendances', {}, {
+        onSuccess: () => console.log("Checked out!")
+    })
 }
 </script>
