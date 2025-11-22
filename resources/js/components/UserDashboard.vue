@@ -7,7 +7,7 @@
                 <p class="text-gray-500">Department: {{ employee?.department?.name || '—' }}</p>
             </div>
             <div class="flex gap-2">
-                {{ props.stats.attendence_data.check_in}}
+                <!-- {{ props.stats.attendence_data.check_in}} -->
                 <Button
                     variant="outline"
                     @click="checkIn"
@@ -67,7 +67,7 @@ import { router } from '@inertiajs/vue3';
 Chart.register(...registerables)
 
 const props = usePage().props
-console.log(props)
+// console.log(props)
 const stats = props.stats
 const monthly = props.monthly
 

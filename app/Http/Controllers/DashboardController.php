@@ -26,12 +26,6 @@ class DashboardController extends Controller
             return Inertia::render('Dashboard/Index', $data);
         }
 
-        // $today = Carbon::today();
-        // $stats = [
-        //     'total_employees' => Employee::count(),
-        //     'present_today'   => Attendance::whereDate('date', $today)->where('status', 'present')->count(),
-        //     'on_leave'        => Attendance::whereDate('date', $today)->where('status', 'leave')->count(),
-        // ];
         elseif ($user->hasRole('admin')) {
             $data = GetAdminDashboard::get($user);
              $data['monthly'] = $monthlyStats;

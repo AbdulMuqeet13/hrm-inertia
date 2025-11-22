@@ -35,7 +35,7 @@ import { Input } from '@/components/ui/input';
 import DataTable from '@/components/DataTable.vue';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 import { h } from 'vue';
-import { Pencil, Trash } from 'lucide-vue-next';
+import { Pencil, Trash,RefreshCcw } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge/index.ts';
 
 const props = defineProps({
@@ -45,6 +45,7 @@ const props = defineProps({
     default: () => ({ search: '' })
 },
 });
+console.log(props)
 const filters = reactive({ search: props.filters?.search || '' });
 
 const reloadData = (page = 1) => {
@@ -102,15 +103,31 @@ const columns = [
                 },
             ),
             h(
+                
                 Button,
                 {
+                    
                     size: 'sm',
                     variant: 'destructive',
                     class: 'ml-4 h-8',
+                    disabled: row.status !== 'active',
                     onClick: () => router.delete(`/employees/${row.id}`),
                 },
                 () => h(Trash),
             ),
+            h(
+                
+                Button,
+                {
+                    
+                    size: 'sm',
+                    variant: 'destructive',
+                    class: 'ml-4 h-8',
+                    disabled: row.status == 'active',
+                    onClick: () => router.put(`/employees/${row.id}/reactivate`),
+                },
+                () => h(RefreshCcw),
+            ), 
         ],
     },
 ];

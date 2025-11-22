@@ -18,6 +18,8 @@ Route::middleware(['auth'])->group(function () {
     // ------------------- HR | Admin -------------------
     Route::middleware('role:hr|admin')->group(function () {
         Route::resource('employees', EmployeeController::class)->except('show');
+        Route::put('/employees/{employee}/reactivate', [EmployeeController::class, 'reactivate'])
+    ->name('employees.reactivate');
         Route::resource('attendances', AttendanceController::class)->only(['index']);
     });
 

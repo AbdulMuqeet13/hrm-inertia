@@ -23,15 +23,15 @@
                 <Button
                     variant="outline"
                     @click="checkIn"
-                    :disabled="attendance?.check_in"
+                    :disabled="props.stats?.attendence_data?.check_in"
                 >
                     Check In
                 </Button>
-                {{ flash.success }}
+               
                 <Button
                     variant="destructive"
                     @click="checkOut"
-                    :disabled="!attendance?.check_in || attendance?.check_out"
+                    :disabled="props.stats?.attendence_data?.check_in || props.stats?.attendence_data?.check_out"
                 >
                     Check Out
                 </Button>
@@ -45,8 +45,10 @@
                 <Badge :variant="attendance?.status === 'present' ? 'success' : 'secondary'">
                     {{ attendance?.status || 'Not Marked' }}
                 </Badge>
-                <span v-if="attendance?.check_in">Check-in: {{ attendance.check_in }}</span>
-                <span v-if="attendance?.check_out">Check-out: {{ attendance.check_out }}</span>
+               <span v-if="props.stats?.attendence_data
+                ?.check_in">Check-in: {{ props.stats?.attendence_data
+                ?.check_in }}</span>
+                <span v-if="props.stats?.attendence_data?.check_out">Check-out: {{ props.stats?.attendence_data?.check_out }}</span>
             </div>
         </Card>
 
@@ -78,7 +80,7 @@ Chart.register(...registerables)
 const props = usePage().props
 const stats = props.stats
 const monthly = props.monthly
-
+console.log(props)
 const chartData = {
     labels: monthly.map(m => `Month ${m.month}`),
     datasets: [{ label: 'Attendance', data: monthly.map(m => m.total), backgroundColor: '#4ade80' }],
@@ -90,11 +92,12 @@ function formatTitle(str) {
 }
 function checkIn() {
     router.post('/attendances', {}, {
-        onSuccess: () => console.log("Checked in!")
+        preserveScroll: true,
+        onSuccess: () => console.log("Checked In")
     })
 }
 function checkOut() {
-    router.put('/attendances', {}, {
+  router.put(`/attendances/${props.auth.user.id}`, {}, {
         onSuccess: () => console.log("Checked out!")
     })
 }

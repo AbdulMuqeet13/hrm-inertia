@@ -64,9 +64,11 @@ class EmployeeController extends Controller
             'roles' => $roles,
         ]);
     }
+    
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
-    {
+    {   
+       
         Employee::updateEmployee($request->validated(), $employee);
         return redirect()->route('employees.index')->with('success', 'Employee updated.');
     }
@@ -74,6 +76,12 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->terminate();
+        
         return redirect()->back()->with('success', 'Employee terminated.');
     }
+    public function reactivate(Employee $employee)
+{
+    $employee->reactivate();
+    return back()->with('success', 'Employee reactivated.');
+}
 }
