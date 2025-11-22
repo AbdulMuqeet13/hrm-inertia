@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HiringController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AttendanceController;
 
 // Public routes
@@ -28,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('attendances', AttendanceController::class)->only(['store', 'update']);
 
     });
+    // Route::middleware('role:admin')->group(function(){
+    //     Route::get("hirednotification", [HiringController::class, "index"]);
+    // });
     // Route::middleware('role:hr')->group(function () {
     //     Route::resource('attendances', AttendanceController::class)->only(['index', 'store', 'update']);
     // });

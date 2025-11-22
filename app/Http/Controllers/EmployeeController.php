@@ -2,33 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Employee\StoreEmployeeRequest;
-use App\Http\Requests\Employee\UpdateEmployeeRequest;
-use App\Models\Employee;
 use App\Models\User;
-use FontLib\Table\Type\name;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use App\Models\Employee;
+use App\Notifications\Hired;
+use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use function Laravel\Prompts\password;
+use App\Notifications\HiredNotification;
+use App\Http\Requests\Employee\StoreEmployeeRequest;
+use App\Http\Requests\Employee\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
         $employees = Employee::query()
-            ->when(
+        ->when(
                 $request->search,
                 fn($q, $search) => $q->where(function ($q) use ($search) {
                     $q->where('first_name', 'like', '%' . $search . '%')
                         ->orWhere('last_name', 'like', '%' . $search . '%');
                 })
             )
-            ->paginate(10)
-            ->withQueryString();
-
+        ->paginate(10)
+        ->withQueryString();      
         return Inertia::render('Employees/Index', [
             'employees' => $employees,
             'filters' => $request->only('search'),
@@ -53,6 +54,14 @@ class EmployeeController extends Controller
         $data = $request->validated();
         $data['user_id'] = $user->id;
         Employee::createEmployee(data: $data);
+
+        $mailData = [
+        "Hi" => "$user->name",
+        
+        "hiring" => "Welcome to our company and congratulations on your hiring!",
+        ];
+        $user->notify(new HiredNotification($mailData));
+
         return redirect()->route('employees.index')->with('success', 'Employee added successfully.');
     }
 
