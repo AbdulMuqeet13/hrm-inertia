@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HiringController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AttendanceController;
@@ -22,12 +23,24 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/employees/{employee}/reactivate', [EmployeeController::class, 'reactivate'])
     ->name('employees.reactivate');
         Route::resource('attendances', AttendanceController::class)->only(['index']);
+        Route::resource('reports', ReportController::class, [
+    'parameters' => [
+        'reports' => 'type', 
+    ]
+    ]);
     });
 
     // ------------------- EMPLOYEE -------------------
     Route::middleware('role:employee|hr')->group(function () {
         Route::resource('attendances', AttendanceController::class)->only(['store', 'update']);
-
+      
+    });
+    Route::middleware('role:employee|hr|admin')->group(function () {
+          Route::resource('reports', ReportController::class, [
+    'parameters' => [
+        'reports' => 'type', 
+    ]
+    ]); 
     });
     // Route::middleware('role:admin')->group(function(){
     //     Route::get("hirednotification", [HiringController::class, "index"]);

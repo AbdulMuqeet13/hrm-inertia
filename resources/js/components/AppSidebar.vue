@@ -13,6 +13,7 @@ import {
 import { index as dashboard } from '@/routes/dashboard';
 import { index as employees } from '@/routes/employees';
 import { index as attendances } from '@/routes/attendances';
+import {index as reports} from '@/routes/reports'
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid } from 'lucide-vue-next';
@@ -36,6 +37,12 @@ const mainNavItems: NavItem[] = [
         href: attendances(),
         icon: LayoutGrid,
         roles: ['employee', 'hr','admin'],
+    },
+    {
+        title: 'Report',
+        href: reports(),
+        icon: LayoutGrid,
+        roles: ['admin', 'employee', 'hr'],
     },
 ];
 </script>
