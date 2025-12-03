@@ -12,10 +12,10 @@ class GetReportData
         
         $query = Attendance::query()
             ->with('employee'); 
-
-        // Filter by employee
+        
         if (!empty($filters['employee_id'])) {
             $query->where('employee_id', $filters['employee_id']);
+            
         }
 
         // Filter by date range
