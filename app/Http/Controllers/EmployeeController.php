@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ImportDetails;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Employee;
 use App\Notifications\Hired;
 use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
+use App\Exports\SampleExport;
+use App\Imports\EmployeeImport;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use function Laravel\Prompts\password;
+use Maatwebsite\Excel\Facades\Excel;
+// use function Laravel\Prompts\password;
 use App\Notifications\HiredNotification;
 use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
@@ -88,9 +92,24 @@ class EmployeeController extends Controller
         
         return redirect()->back()->with('success', 'Employee terminated.');
     }
+    public function export_employee(){
+        //   dd('Export started!');
+         return Excel::download(new SampleExport, 'Sample.xlsx');
+    }
+    public function import_employee(Request $request) {
+       $request->validate([
+        'file' => 'required|mimes:xlsx,xls',
+    ]);
+
+    // Get the file from the request
+    $file = $request->file('file');
+    $path = $file->storeAs('Tempfile', time() . '_' . $file->getClientOriginalName());
+    // Dispatch the job to import employee data
+    dispatch(new ImportDetails($path));
+    }
     public function reactivate(Employee $employee)
-{
+    {
     $employee->reactivate();
     return back()->with('success', 'Employee reactivated.');
-}
+    }
 }

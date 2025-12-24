@@ -23,11 +23,15 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/employees/{employee}/reactivate', [EmployeeController::class, 'reactivate'])
     ->name('employees.reactivate');
         Route::resource('attendances', AttendanceController::class)->only(['index']);
+        Route::get('/export-attendance', [AttendanceController::class, 'export_attendance']);
+        Route::get('/export-employee', [EmployeeController::class, 'export_employee']);
+        Route::post('/import-employee',[EmployeeController::class,'import_employee']);
         Route::resource('reports', ReportController::class, [
     'parameters' => [
         'reports' => 'type', 
     ]
     ]);
+       
     });
 
     // ------------------- EMPLOYEE -------------------

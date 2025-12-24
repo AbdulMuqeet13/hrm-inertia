@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\Attendance;
 use App\Models\Employee;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
+use App\Exports\AttendanceExport;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceController extends Controller
 {
@@ -45,5 +47,9 @@ class AttendanceController extends Controller
     {
         $attendance->delete();
         return redirect()->back()->with('success', 'Attendance record deleted.');
+    }
+    public function export_attendance(){
+        //   dd('Export started!');
+         return Excel::download(new AttendanceExport, 'attendance.xlsx');
     }
 }

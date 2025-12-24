@@ -2,15 +2,19 @@
     <AppSidebarLayout>
         <Card class="space-y-6 p-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-semibold">Attendance</h2>
+                <h2 class="text-2xl font-semibold">Attendance</h2> 
                 <div class="space-x-2">
                     <Button @click="checkIn">Check In</Button>
                     <Button variant="outline" @click="checkOut"
                         >Check Out</Button
                     >
-                </div>
+                </div>  
             </div>
-
+            <Button variant="outline" @click="excel"
+                        >Download Excel</Button
+            >
+         
+            
             <DataTable
                 :columns="columns"
                 :data="attendances?.data ?? []"
@@ -40,6 +44,9 @@ function checkIn() {
 function checkOut() {
     router.put('/attendances/0', {});
 } // using update route
+function excel(){
+    window.location.href = '/export-attendance';
+}
 function paginate(page) {
     router.reload({
         only: ['attendances'],
