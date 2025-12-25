@@ -12,14 +12,13 @@
                     variant="outline"
                     @click="checkIn"
                     :disabled="props.stats?.attendence_data?.check_in"
-
                 >
                     Check In
                 </Button>
                 <Button
                     variant="destructive"
                     @click="checkOut"
-                    :disabled="props.stats?.attendence_data?.check_in || props.stats?.attendence_data?.check_out"
+                    :disabled="!props.stats?.attendence_data?.check_in || props.stats?.attendence_data?.check_out"
                 >
                     Check Out
                 </Button>
@@ -84,12 +83,18 @@ function formatTitle(str) {
 function checkIn() {
     router.post('/attendances', {}, {
         preserveScroll: true,
-        onSuccess: () => console.log("Checked In")
+        onSuccess: () => {
+            router.reload({ only: ['stats'] })
+        }
     })
 }
+
 function checkOut() {
-  router.put(`/attendences/${props.auth.user.id}`, {}, {
-        onSuccess: () => console.log("Checked out!")
+    router.put(`/attendances/${props.auth.user.id}`, {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            router.reload({ only: ['stats'] })
+        }
     })
 }
 </script>

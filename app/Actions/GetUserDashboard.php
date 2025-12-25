@@ -11,7 +11,7 @@ use App\Http\Resources\UserResource;
 class GetUserDashboard
 {
     public static function get($user): array
-    {     
+    {
          $today = Carbon::today();
          $employee = Employee::where('user_id', $user->id)->first();
          $attendance = Attendance::where('employee_id', $employee->id)->latest()->first();
@@ -23,7 +23,7 @@ class GetUserDashboard
             'role' => 'employee',
             'stats' => [
                 'employee_data' => $employee,
-                'attendence_data' =>  $attendance,
+                'attendence_data' => $attendance,
                 'total_employees' => $total_employees,
                 'present_today'   => $present_today,
                 'on_leave'        => $on_leave ,
