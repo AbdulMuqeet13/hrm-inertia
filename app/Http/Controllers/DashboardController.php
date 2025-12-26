@@ -16,36 +16,44 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         // dd($user->getRoles);
-         $monthlyStats = Attendance::selectRaw('MONTH(date) as month, COUNT(*) as total')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
+//         $monthlyStats = Attendance::selectRaw('MONTH(date) as month, COUNT(*) as total')
+//            ->groupBy('month')
+//            ->orderBy('month')
+//            ->get();
         if ($user->hasRole('employee')) {
+            $employeeId = $user->employee ? $user->employee->id : null;
+
+            // If no employee or no attendance yet, return empty collection
+            $monthlyStats = $employeeId
+                ? Attendance::selectRaw('MONTH(date) as month, COUNT(*) as total')
+                    ->where('employee_id', $employeeId)
+                    ->groupBy('month')
+                    ->orderBy('month')
+                    ->get()
+                : collect(); // empty collection
             $data = GetUserDashboard::get($user);
-             $data['monthly'] = $monthlyStats;
+            $data['monthly'] = $monthlyStats;
             return Inertia::render('Dashboard/Index', $data);
-        }
-
-        elseif ($user->hasRole('admin')) {
+    } elseif ($user->hasRole('admin')) {
+            $monthlyStats = Attendance::selectRaw('MONTH(date) as month, COUNT(*) as total')
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get();
             $data = GetAdminDashboard::get($user);
-             $data['monthly'] = $monthlyStats;
+            $data['monthly'] = $monthlyStats;
             return Inertia::render('Dashboard/Index', $data);
             // $stats['terminated'] = Employee::where('status', 'terminated')->count();
-        }
-        elseif ($user->hasRole('hr')) {
+        } elseif ($user->hasRole('hr')) {
+            $monthlyStats = Attendance::selectRaw('MONTH(date) as month, COUNT(*) as total')
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get();
             $data = GetHrDashboard::get($user);
-             $data['monthly'] = $monthlyStats;
+            $data['monthly'] = $monthlyStats;
             return Inertia::render('Dashboard/Index', $data);
             // $stats['terminated'] = Employee::where('status', 'terminated')->count();
         }
-        $monthlyStats = Attendance::selectRaw('MONTH(date) as month, COUNT(*) as total')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
 
-        return Inertia::render('Dashboard/Index', [
-
-            'monthly' => $monthlyStats,
-        ]);
     }
+
 }
